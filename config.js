@@ -1,13 +1,14 @@
 'use strict';
 
 module.exports = {
+	
 	port:8000,
 	session:{
 		secret: 'uwotm8xxc',
 		age: 20 *60 * 1000 // 20 minutes in ms
 	},
 	app:{
-		name:'demo_app',
+		api_url:'/api/v1.0',
 		root:'.'
 	},
 	jwt:{

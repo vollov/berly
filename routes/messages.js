@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var Message = mongoose.model('Message');
 
-var Logger = require('../lib/logger.js');
-var logger = Logger().getLogger();
+//var Logger = require('../lib/logger.js');
+//var logger = Logger().getLogger();
 
 var express = require('express');
 var router = express.Router();
@@ -14,19 +14,30 @@ var router = express.Router();
  * get all messages
  */
 router.get('/messages', function(req, res, next) {
-	Message.find(function(err, messages) {
+	console.log('calling GET messages');
+	
+	Message.find({}).select('id_ tile content').exec(function(err, messages) {
 		if (err) {
 			return next(err);
 		}
-
+		console.log(messages);
 		res.json(messages);
 	});
+	
+//	Message.find({},function(err, messages) {
+//		if (err) {
+//			return next(err);
+//		}
+//		console.log(messages);
+//		res.json(messages);
+//	});
 });
 
 /**
  * create new message
  */
 router.post('/messages', function(req, res, next) {
+	console.log(req.body);
 	var message = new Message(req.body);
 	//message.author = req.payload.username;
 
@@ -42,7 +53,7 @@ router.post('/messages', function(req, res, next) {
 router.param('message', function(req, res, next, id) {
 	var query = Message.findById(id);
 
-	logger.debug('entering router.param->message, id=' + id);
+	console.log('entering router.param->message, id=' + id);
 	query.exec(function(err, message) {
 		if (err) {
 			return next(err);
@@ -57,7 +68,7 @@ router.param('message', function(req, res, next, id) {
 });
 
 router.get('/messages/:message', function(req, res, next) {
-	logger.debug('entering /messages/:message');
+	console.log('entering /messages/:message');
 	res.json(req.message);
 });
 

@@ -13,8 +13,6 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 
 var cfg = require('./config');
-var Logger = require('./lib/logger.js');
-var logger = Logger().getLogger();
 
 require('./models/Users');
 require('./models/Messages');
@@ -24,7 +22,7 @@ require('./lib/passport');
 //routes 
 //=======================
 //var routes = require('./routes/index');
-//var users = require('./routes/users');
+var users = require('./routes/users');
 var messages = require('./routes/messages');
 
 //connect MongoDB
@@ -47,7 +45,8 @@ app.use(favicon(__dirname + '/favicon.ico'));
 app.use(express.static(__dirname + '/public'));
 app.use(passport.initialize());
 
-app.use('/messages', messages);
+app.use(cfg.app.api_url, messages);
+app.use(cfg.app.api_url, users);
 
 //catch 404 and forward to error handler
 app.use(function(req, res, next) {
