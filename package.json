@@ -8,7 +8,8 @@
   "license": "MIT",
   "main": "server.8000.js",
   "scripts": {
-    "start": "node server.8000.js"
+    "start": "node server.8000.js",
+    "test": "mocha --ui bdd -R spec test/**/test_*.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -17,9 +18,11 @@
     "express": "^4.14.0",
     "express-jwt": "^3.4.0",
     "jsonwebtoken": "^7.0.1",
+    "mocha": "^2.5.3",
     "mongoose": "^4.5.3",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "underscore": "^1.8.3"
   }
 }

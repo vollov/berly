@@ -1,0 +1,89 @@
+apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list
+apt-get -y update
+apt-get -y install mongodb-10gen
+
+##########################################
+# Ubuntu
+##########################################
+[1] install
+follow instruction in http://docs.mongodb.org/manual/tutorial/install-mongodb-on-debian-or-ubuntu-linux/
+#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+#vi /etc/apt/sources.list.d/10gen.list add:
+deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
+#apt-get update
+#apt-get install mongodb-10gen
+
+
+[2] config
+/etc/init/mongodb.conf
+/etc/mongodb.conf
+
+data files in /var/lib/mongodb
+log files in /var/log/mongodb
+
+
+[3]install py-mongodb on windows
+http://pypi.python.org/pypi/pymongo/
+python setup.py install pymongo
+
+[4]auto start
+update-rc.d mongodb defaults
+chkconfig --levels 235 mongodb on
+##########################################
+# mongo
+##########################################
+
+show dbs
+
+[] insert
+> post = {"title" : "My Blog Post",
+... "content" : "Here's my blog post.",
+... "date" : new Date()}
+{
+"title" : "My Blog Post",
+"content" : "Here's my blog post.",
+"date" : "Sat Dec 12 2009 11:23:21 GMT-0500 (EST)"
+}
+> db.blog.insert(post)
+>db.event_count.findOne()
+
+[] find returns all of the documents in a collection
+> db.blog.find()
+db.events.find(null, {host: 1,user:1 });
+[] update
+> db.blog.update({title : "My Blog Post"}, post)
+> db.unicorns.update({name: 'Roooooodles'}, {$set: {weight: 590}})
+
+[] update field name
+db.events_event.update({ $rename : { 'id' : 'sequence' } })
+db.events_event.update({}, {"$rename":{"id":"sequence" }, false, true});
+
+db.events_event.update({}, {"$rename":{"id":"sequence" }});
+
+[]remove
+> db.event_count.remove({number : 1})
+db.unicorns.update({name: 'Roooooodles'}, {$set: {weight: 590}})
+
+[]add index
+>>> 
+db.events.ensureIndex('create_time')
+
+        event = {'create_time': time, 
+                 'user': log_item_list[0], 
+                 'ip': log_item_list[1], 
+                 'host':log_item_list[2],
+
+[]show collections
+db.getCollectionNames()
+[]drop collection
+db.drop_collection("bar")
+
+[] drop a db
+> use sfm_test
+switched to db sfm_test
+> db.dropDatabase();
+{ "dropped" : "sfm_test", "ok" : 1 }
+
+dumping
+mongoexport --db sfm --collection events --out sfm_events.json
