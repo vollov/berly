@@ -34,8 +34,9 @@ module.exports = {
 		port: '27017',
 	},
 	port:8000,
-	session:{
+	token:{
 		secret: 'uwotm8xxc',
+		exp_in_days: 14, // token expire in 14 days
 		age: 20 *60 * 1000 // 20 minutes in ms
 	},
 	app:{

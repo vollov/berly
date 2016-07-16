@@ -1,33 +1,27 @@
 var mongoose = require('mongoose');
 var Message = mongoose.model('Message');
 
+var _ = require('underscore');
 var cfg = require('../config');
 var bunyan = require('bunyan');
-var log = bunyan.createLogger(cfg.logging);
+var log = bunyan.createLogger(_.extend(cfg.logging, {name: 'route-messages'}));
 
 var express = require('express');
 var router = express.Router();
-//var jwt = require('express-jwt');
 
+//var jwt = require('express-jwt');
 //var auth = jwt({secret: cfg.secret, userProperty: 'payload'});
 
 /**
- * get all messages
+ * Only authenticated user can call api to get all messages
  */
 router.get('/messages', function(req, res, next) {
-	console.log('calling GET messages');
-	
-	log.debug('debug message for messages GET');
-	Message.find({}).select('id_ tile content').exec(function(err, messages) {
-		if (err) {
-			return next(err);
-		}
-		console.log(messages);
-		res.json(messages);
-	});
-	
-//	Message.find({},function(err, messages) {
+
+	log.debug('HTTP GET /messages -- all message, username = %j', req);
+	res.status(200).json('calling get all messages');
+//	Message.find({}).select('id_ title content').exec(function(err, messages) {
 //		if (err) {
+//			log.debug('HTTP GET /messages -- all message, err = %j', err);
 //			return next(err);
 //		}
 //		console.log(messages);
@@ -55,6 +49,8 @@ router.post('/messages', function(req, res, next) {
 
 router.get('/messages/:id', function(req, res, next) {
 	var id = req.params.id;	
+	log.debug('HTTP GET /messages/:id -- id = %s', id);
+	
 	var query = Message.findById(id);
 
 	query.exec(function(err, message) {
@@ -108,26 +104,15 @@ router.put('/messages/:id', function(req, res, next) {
 			//return next(new Error("can't find message"));
 		}
 		
-		message.update(body, function(error, message) {
+		message.update(body, function(error, status) {
 			
-			log.debug('updated msg=%j', message);
+			log.debug('updated status=%j', status);
 			
 			if(error) return next(error);
-			
-			
-			res.json(message);
+			res.json(status);
 		});
 	});
-	
-	
-	
-	//res.json('calling put message');
-
 });
 
-router.get('/messages/:message', function(req, res, next) {
-	console.log('entering /messages/:message');
-	res.json(req.message);
-});
 
 module.exports = router;

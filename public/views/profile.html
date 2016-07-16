@@ -1,3 +1,9 @@
 <div class="page-header">
-	<h3>profile</h3>
+	<h3>profile -- listing messages here</h3>
+</div>
+
+<div ng-repeat="m in messages">
+
+	<h3>{{m.title}}</h3>
+	<span> {{m.content}}</span>
 </div>

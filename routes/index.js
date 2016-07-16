@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-//var express = require('express');
-//var router = express.Router();
+var express = require('express');
+var router = express.Router();
 //var passport = require('passport');
 //var jwt = require('express-jwt');
 
@@ -12,30 +12,30 @@ var User = mongoose.model('User');
 
 
 /* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index');
-});
-
-router.get('/posts', function(req, res, next) {
-  Post.find(function(err, posts){
-    if(err){ 
-      return next(err);
-    }
-
-    res.json(posts);
-  });
-});
-
-router.post('/posts', auth, function(req, res, next) {
-  var post = new Post(req.body);
-  post.author = req.payload.username;
-
-  post.save(function(err, post){
-    if(err){ return next(err); }
-
-    res.json(post);
-  });
-});
+//router.get('/', function(req, res) {
+//  res.render('index');
+//});
+//
+//router.get('/posts', function(req, res, next) {
+//  Post.find(function(err, posts){
+//    if(err){ 
+//      return next(err);
+//    }
+//
+//    res.json(posts);
+//  });
+//});
+//
+//router.post('/posts', auth, function(req, res, next) {
+//  var post = new Post(req.body);
+//  post.author = req.payload.username;
+//
+//  post.save(function(err, post){
+//    if(err){ return next(err); }
+//
+//    res.json(post);
+//  });
+//});
 //
 //router.param('post', function(req, res, next, id) {
 //  var query = Post.findById(id);

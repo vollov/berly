@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('berylApp', ['ui.router'])
+angular.module('berylApp', ['ui.router', 'auth', 'message'])
 .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('home', {
 		url : '/home',
@@ -10,7 +10,12 @@ angular.module('berylApp', ['ui.router'])
 	}).state('pofile', {
 		url : '/profile',
 		templateUrl : '/views/profile.html',
-		//controller : 'PostsCtrl'
+		controller : 'MessageCtrl',
+		resolve: {
+			postPromise: ['messageService', function(messageService){
+				return messageService.getAll();
+			}]
+		}
 	}).state('users', {
 		url : '/users',
 		templateUrl : '/views/users.html',
@@ -18,7 +23,27 @@ angular.module('berylApp', ['ui.router'])
 	}).state('about', {
 		url : '/about',
 		templateUrl : '/views/about.html',
+		controller : 'MessageCtrl'
 		//controller : 'PostsCtrl'
+	}).state('login', {
+		url : '/login',
+		templateUrl : '/views/login.html',
+		controller : 'AuthCtrl',
+		onEnter : [ '$state', 'authService', function($state, authService) {
+			if (authService.isLoggedIn()) {
+				$state.go('home');
+			}
+		} ]
+	})
+	.state('register', {
+		url : '/register',
+		templateUrl : '/views/register.html',
+		controller : 'AuthCtrl',
+		onEnter : [ '$state', 'authService', function($state, authService) {
+			if (authService.isLoggedIn()) {
+				$state.go('home');
+			}
+		}]
 	});
 	
 	$urlRouterProvider.otherwise('home');

@@ -47,9 +47,9 @@ describe('Messages', function() {
 	
 	
 	// list push()
-	describe('Find()', function() {
+	describe('read and update', function() {
 		
-		it('should support find message', function(done) { 
+		it('should support find message by id', function(done) { 
 			request(url)
 			.get(cfg.app.api_url + '/messages/' + test_message_id)
 			.expect('Content-Type', /json/)
@@ -67,6 +67,23 @@ describe('Messages', function() {
 			});
 		});
 		
+		it('should support find all messages', function(done) { 
+			request(url)
+			.get(cfg.app.api_url + '/messages')
+			//.expect('Content-Type', /json/)
+			//.expect('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With')
+			.expect(200)
+			.end(function(err, res) {
+				if (err) {
+					return done(err);
+					//throw err;
+				}
+				log.debug('GET messages = %j', res.body);
+				//message_id_list.push(res.body._id)
+				//res.body.should.have.property('title', 'once we have specified the info we');
+				done();
+			});
+		});
 		
 		it('should support update message', function(done) { 
 			
@@ -92,7 +109,7 @@ describe('Messages', function() {
 				//message_id_list.push(res.body._id)
 				res.body.should.have.property('n',1);
 				res.body.should.have.property('ok', 1);
-				res.body.should.have.property('nModified', 1);
+				//res.body.should.have.property('nModified', 1);
 				done();
 			});
 		});
