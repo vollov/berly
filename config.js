@@ -9,7 +9,7 @@ module.exports = {
 			level : 'debug',
 			type : 'rotating-file',
 			path : path.join('.', 'logs/server.log'),
-			period : '1d', // daily rotation
+			period : '14d', // daily rotation
 			count : 3 // keep 3 back copies
 		} ]
 	},

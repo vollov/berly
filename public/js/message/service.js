@@ -8,11 +8,11 @@ angular.module('message.services', ['auth.services'])
 	var service = {
 			messages : []
 	};
-	
+	//
 	service.getAll = function() {
-		return $http.get(url + 'messages',{
-		    headers: {Authorization: 'Bearer '+authService.getToken()}
-		  }).success(function(data) {
+		return $http.get(url + 'messages', 
+				{headers: {Authorization: 'Bearer '+authService.getToken()}})
+		.success(function(data) {
 			angular.copy(data, service.messages);
 		});
 	};

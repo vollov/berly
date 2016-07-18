@@ -46,6 +46,8 @@ app.use(favicon(__dirname + '/favicon.ico'));
 app.use(express.static(__dirname + '/public'));
 app.use(passport.initialize());
 
+
+
 app.use(cfg.app.api_url, auth);
 app.use(cfg.app.api_url, messages);
 app.use(cfg.app.api_url, users);

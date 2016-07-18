@@ -19,6 +19,11 @@ https://codeforgeek.com/2015/07/unit-testing-nodejs-application-using-mocha/
 
 https://material.google.com/style/icons.html#icons-product-icons
 
+##Debug server code
+ set DEBUG=express:* & node index.js
+
+
+
 ## npm command
 npm list -g --depth=0
 -S, --save: Package will appear in your dependencies.

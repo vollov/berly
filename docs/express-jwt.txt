@@ -1,0 +1,67 @@
+app.all('/apiv1', token.unless({ path: ['apiv1/user/create', '/apiv1/auth/login']}));
+Try using use and adding in the path route a slash / at the beginning:
+
+app.use('/apiv1', token.unless({ path: ['/apiv1/user/create', '/apiv1/auth/login']}));
+Here it is an example that is working:
+
+app.js:
+
+var express = require('express');
+var app = express();
+
+var expressJwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
+var secret = 'secret';
+
+app.use('/api', expressJwt({secret: secret}).unless({path: ['/api/token']}));
+
+app.get('/api/token', function(req, res) {
+  var token = jwt.sign({foo: 'bar'}, secret);
+  res.send({token: token});
+});
+
+app.get('/api/protected', function(req, res) {
+  res.send('hello from /api/protected route.');
+});
+
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500).send(err);
+});
+
+app.listen(4040, function() {
+  console.log('server up and running at 4040 port');
+});
+
+module.exports = app;
+test.js:
+
+var request = require('supertest');
+var app = require('./app.js');
+
+describe('Test API', function() {
+  var token = '';
+
+  before(function(done) {
+    request(app)
+      .get('/api/token')
+      .end(function(err, response) {
+        if (err) { return done(err); }
+        var result = JSON.parse(response.text);
+        token = result.token;
+        done();
+      });
+  });
+
+  it('should not be able to consume /api/protected since no token was sent', function(done) {
+    request(app)
+      .get('/api/protected')
+      .expect(401, done);
+  });
+
+  it('should be able to consume /api/protected since token was sent', function(done) {
+    request(app)
+      .get('/api/protected')
+      .set('Authorization', 'Bearer ' + token)
+      .expect(200, done);
+  });
+});

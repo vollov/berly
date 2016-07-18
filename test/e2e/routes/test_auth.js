@@ -89,9 +89,34 @@ describe('Authentication module', function() {
 					//throw err;
 				}
 				log.debug('POST /login return = %j', res.body);
-				//token = res.body.token;
+				token = res.body.token;
 				//message_id_list.push(res.body._id)
 				res.body.should.have.property('token', token);
+				done();
+			});
+		});
+		
+		it('should support find all messages', function(done) { 
+			
+			log.debug('GET find all messages token = %s', token);
+			request(url)
+			.get(cfg.app.api_url + '/messages')
+			.set('Authorization', 'Bearer ' + token)
+			//.expect('Content-Type', /json/)
+			//.expect('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With')
+			//.expect(200)
+			.end(function(err, res) {
+				if (err) {
+					log.debug('GET find all messages error = %j', err);
+					return done(err);
+					//throw err;
+				}
+				
+				//var result = JSON.parse(res.body);
+				
+				log.debug('GET messages = %j', res);
+				//message_id_list.push(res.body._id)
+				//res.body.should.have.property('title', 'once we have specified the info we');
 				done();
 			});
 		});

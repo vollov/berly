@@ -9,24 +9,30 @@ var log = bunyan.createLogger(_.extend(cfg.logging, {name: 'route-messages'}));
 var express = require('express');
 var router = express.Router();
 
-//var jwt = require('express-jwt');
-//var auth = jwt({secret: cfg.secret, userProperty: 'payload'});
+var jwt = require('express-jwt');
+var jwtauth = jwt({secret: cfg.secret, userProperty: 'payload'});
+
+router.get('/cat', function(req, res, next) {
+	log.debug('HTTP GET /cat -- all message');
+	res.status(200).json('calling get cat');
+	});
 
 /**
  * Only authenticated user can call api to get all messages
  */
-router.get('/messages', function(req, res, next) {
+router.get('/messages', jwtauth, function(req, res, next) {
 
-	log.debug('HTTP GET /messages -- all message, username = %j', req);
-	res.status(200).json('calling get all messages');
-//	Message.find({}).select('id_ title content').exec(function(err, messages) {
-//		if (err) {
-//			log.debug('HTTP GET /messages -- all message, err = %j', err);
-//			return next(err);
-//		}
-//		console.log(messages);
-//		res.json(messages);
-//	});
+	log.debug('HTTP GET /messages -- all message, req =');
+	//res.status(200).json('calling get all messages');
+	Message.find({}).select('id_ title content').exec(function(err, messages) {
+		if (err) {
+			log.debug('HTTP GET /messages -- all message, err = %j', err);
+			res.json(err);
+			//return next(err);
+		}
+		//console.log(messages);
+		res.json(messages);
+	});
 });
 
 /**
@@ -113,6 +119,7 @@ router.put('/messages/:id', function(req, res, next) {
 		});
 	});
 });
+
 
 
 module.exports = router;
