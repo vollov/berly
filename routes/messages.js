@@ -9,8 +9,8 @@ var log = bunyan.createLogger(_.extend(cfg.logging, {name: 'route-messages'}));
 var express = require('express');
 var router = express.Router();
 
-var jwt = require('express-jwt');
-var jwtauth = jwt({secret: cfg.secret, userProperty: 'payload'});
+var expressJwt = require('express-jwt');
+var jwtauth = expressJwt({secret: cfg.secret, userProperty: 'payload'});
 
 router.get('/cat', function(req, res, next) {
 	log.debug('HTTP GET /cat -- all message');
@@ -31,7 +31,7 @@ router.get('/messages', jwtauth, function(req, res, next) {
 			//return next(err);
 		}
 		//console.log(messages);
-		res.json(messages);
+		res.json('hello');
 	});
 });
 

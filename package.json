@@ -9,7 +9,7 @@
   "main": "server.8000.js",
   "scripts": {
     "start": "node server.8000.js",
-    "test": "mocha --ui bdd -R spec test/**/test_*.js"
+    "test": "mocha --ui bdd -R spec test/e2e/routes/test_auth.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",

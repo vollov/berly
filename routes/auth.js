@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var jwt = require('express-jwt');
+//var jwt = require('express-jwt');
 
 var _ = require('underscore');
 var cfg = require('../config');
@@ -10,7 +10,7 @@ var bunyan = require('bunyan');
 var log = bunyan.createLogger(_.extend(cfg.logging, {name: 'auth'}));
 
 var User = mongoose.model('User');
-var auth = jwt({secret: cfg.token.secret, userProperty: 'payload'});
+//var auth = jwt({secret: cfg.token.secret, userProperty: 'payload'});
 
 router.post('/register', function(req, res, next) {
 	if (!req.body.username || !req.body.password) {
@@ -48,10 +48,12 @@ router.post('/login', function(req, res, next) {
 		}
 
 		if (user) {
+			log.debug('found user in auth.login..');
 			return res.json({
 				token : user.generateJWT()
 			});
 		} else {
+			log.debug('failed to found user in auth.login');
 			return res.status(401).json(info);
 		}
 	})(req, res, next);

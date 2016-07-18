@@ -3,6 +3,9 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
 var cfg = require('../config');
+var _ = require('underscore');
+var bunyan = require('bunyan');
+var log = bunyan.createLogger(_.extend(cfg.logging, {name: 'user'}));
 
 var UserSchema = new mongoose.Schema({
 	username : {
@@ -15,6 +18,8 @@ var UserSchema = new mongoose.Schema({
 });
 
 UserSchema.methods.generateJWT = function() {
+	
+	log.debug('user.generateJWT()...');
 	// set expiration to 60 days
 	var today = new Date();
 	var exp = new Date(today);

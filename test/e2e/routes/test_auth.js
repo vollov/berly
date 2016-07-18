@@ -28,7 +28,7 @@ describe('Authentication module', function() {
 				log.error('auth clean up err=%j', err);
 				done();
 			}
-			if (!user) {
+			if (!status) {
 				log.error('cannot find user in auth clean up.');
 				done();
 			}
@@ -37,6 +37,10 @@ describe('Authentication module', function() {
 		});
 
 		done();
+//		mongoose.connection.close(function(err) {
+//			done();
+//		});
+
 	});
 	
 	
@@ -121,4 +125,9 @@ describe('Authentication module', function() {
 			});
 		});
 	});
+	
+//	describe('list all messages', function() {
+//		
+//
+//	});
 });

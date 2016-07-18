@@ -19,7 +19,7 @@ describe('Messages DB', function() {
 		
 		mongoose.connect('mongodb://localhost/'+ cfg.db.name, function(err,db){
 		    if (!err){
-		        console.log('Connected to db: ' + cfg.db.name);
+		        log.debug('Connected to db: ' + cfg.db.name);
 		    } else{
 		        console.dir(err); //failed to connect
 		    }
@@ -35,9 +35,15 @@ describe('Messages DB', function() {
 					log.debug('DB -- all message, err = %j', err);
 					//return next(err);
 				}
-				console.log(messages);
+				//console.log(messages);
 				done();
 			});
+		});
+	});
+	
+	after(function(done){
+		mongoose.connection.close(function(err) {
+			done();
 		});
 	});
 });
