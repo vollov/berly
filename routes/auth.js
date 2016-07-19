@@ -13,9 +13,15 @@ var User = mongoose.model('User');
 //var auth = jwt({secret: cfg.token.secret, userProperty: 'payload'});
 
 router.post('/register', function(req, res, next) {
-	if (!req.body.username || !req.body.password) {
+	if (!req.body.username) {
 		return res.status(400).json({
-			message : 'Please fill out all fields'
+			message : 'username required'
+		});
+	}
+	
+	if (!req.body.password) {
+		return res.status(400).json({
+			message : 'password required'
 		});
 	}
 
@@ -35,28 +41,56 @@ router.post('/register', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-	if (!req.body.username || !req.body.password) {
+	if (!req.body.username) {
 		return res.status(400).json({
-			message : 'Please fill out all fields'
+			message : 'username required'
+		});
+	}
+	
+	if (!req.body.password) {
+		return res.status(400).json({
+			message : 'password required'
 		});
 	}
 
-	log.debug('calling passport in auth.login');
-	passport.authenticate('local', function(err, user, info) {
+	User.findOne({username : req.body.username}, function(err, user) {
 		if (err) {
-			return next(err);
-		}
-
-		if (user) {
-			log.debug('found user in auth.login..');
-			return res.json({
-				token : user.generateJWT()
+			return res.status(500).json({
+				message : 'login error when find user by username' 
 			});
-		} else {
-			log.debug('failed to found user in auth.login');
-			return res.status(401).json(info);
 		}
-	})(req, res, next);
+		if (!user) {
+			return res.status(401).json({
+				message : 'login a non-existing user' 
+			});
+		}
+		if (!user.validPassword(req.body.password)) {
+			return res.status(401).json({
+				message : 'Incorrect password.' 
+			});
+		}
+		
+		return res.status(200).json({
+			token : user.generateJWT()
+		})
+	});
+	
+//	log.debug('calling passport in auth.login');
+//	passport.authenticate('local', function(err, user, info) {
+//		if (err) {
+//			return next(err);
+//		}
+//
+//		if (user) {
+//			log.debug('found user in auth.login..');
+//			return res.json({
+//				token : user.generateJWT()
+//			});
+//		} else {
+//			log.debug('failed to found user in auth.login');
+//			return res.status(401).json(info);
+//		}
+//	})(req, res, next);
 });
 
 module.exports = router;

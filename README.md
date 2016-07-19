@@ -14,10 +14,26 @@ npm install --save pkg_name
 npm install --save-dev pkg_name
 bower install --save pkg_name
 
+
+## jwt api
+
+var jwt = require('jsonwebtoken');
+var token = jwt.sign({username: req.body.username}, cfg.jwt.secret, {expiresIn:'14d'});
+
+var expressJwt = require('express-jwt');
+var jwt_auth = expressJwt({secret: cfg.jwt.secret, userProperty: 'payload'});
+app.get('/api/protected', jwt_auth, function(req, res) {
+	res.send('hello from /api/protected route.');
+});
+var users = require('./routes/users');
+app.use('/api/', users);
+
 ## references
 https://codeforgeek.com/2015/07/unit-testing-nodejs-application-using-mocha/
 
 https://material.google.com/style/icons.html#icons-product-icons
+
+https://scotch.io/tutorials/the-anatomy-of-a-json-web-token
 
 ##Debug server code
  set DEBUG=express:* & node index.js

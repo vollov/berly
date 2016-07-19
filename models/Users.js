@@ -27,9 +27,9 @@ UserSchema.methods.generateJWT = function() {
 
 	return jwt.sign({
 		_id : this._id,
-		username : this.username,
-		exp : parseInt(exp.getTime() / 1000),
-	}, cfg.token.secret);
+		username : this.username
+		//exp : parseInt(exp.getTime() / 1000),
+	}, cfg.token.secret, {expiresIn:'30m'});
 };
 
 UserSchema.methods.setPassword = function(password) {

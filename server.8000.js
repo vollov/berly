@@ -10,13 +10,13 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var mongoose = require('mongoose');
-var passport = require('passport');
+//var passport = require('passport');
 
 var cfg = require('./config');
 
 require('./models/Users');
 require('./models/Messages');
-require('./lib/passport');
+//require('./lib/passport');
 
 //=======================
 //routes 
@@ -44,13 +44,11 @@ app.use(bodyParser.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use(express.static(__dirname + '/public'));
-app.use(passport.initialize());
-
-
+//app.use(passport.initialize());
 
 app.use(cfg.app.api_url, auth);
-app.use(cfg.app.api_url, messages);
-app.use(cfg.app.api_url, users);
+app.use(cfg.app.api_url + '/messages', messages);
+app.use(cfg.app.api_url + '/users', users);
 
 
 //catch 404 and forward to error handler

@@ -10,35 +10,35 @@ var express = require('express');
 var router = express.Router();
 
 var expressJwt = require('express-jwt');
-var jwtauth = expressJwt({secret: cfg.secret, userProperty: 'payload'});
+var jwtauth = expressJwt({secret: cfg.token.secret, userProperty: 'payload'});
 
 router.get('/cat', function(req, res, next) {
 	log.debug('HTTP GET /cat -- all message');
-	res.status(200).json('calling get cat');
+	return res.status(200).json('calling get cat');
 	});
 
 /**
  * Only authenticated user can call api to get all messages
  */
-router.get('/messages', jwtauth, function(req, res, next) {
+router.get('/', jwtauth, function(req, res, next) {
 
 	log.debug('HTTP GET /messages -- all message, req =');
 	//res.status(200).json('calling get all messages');
 	Message.find({}).select('id_ title content').exec(function(err, messages) {
 		if (err) {
 			log.debug('HTTP GET /messages -- all message, err = %j', err);
-			res.json(err);
+			return res.status(500).json(err);
 			//return next(err);
 		}
 		//console.log(messages);
-		res.json('hello');
+		return res.status(200).json(messages);
 	});
 });
 
 /**
  * create new message
  */
-router.post('/messages', function(req, res, next) {
+router.post('/', function(req, res, next) {
 	log.debug('POST message= %j', req.body);
 	var message = new Message(req.body);
 	//message.author = req.payload.username;
@@ -53,7 +53,7 @@ router.post('/messages', function(req, res, next) {
 	});
 });
 
-router.get('/messages/:id', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
 	var id = req.params.id;	
 	log.debug('HTTP GET /messages/:id -- id = %s', id);
 	
@@ -72,7 +72,7 @@ router.get('/messages/:id', function(req, res, next) {
 	});
 });
 
-router.delete('/messages/:id', function(req, res, next){
+router.delete('/:id', function(req, res, next){
 	var id = req.params.id;
 	var query = Message.findById(id).remove();
 	
@@ -89,7 +89,7 @@ router.delete('/messages/:id', function(req, res, next){
 	});
 });
 
-router.put('/messages/:id', function(req, res, next) {
+router.put('/:id', function(req, res, next) {
 	var id = req.params.id;
 	var body = req.body;
 	
@@ -119,7 +119,5 @@ router.put('/messages/:id', function(req, res, next) {
 		});
 	});
 });
-
-
 
 module.exports = router;
