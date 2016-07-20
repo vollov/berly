@@ -1,0 +1,39 @@
+	  return {
+		    request: function(config) {
+		    	console.log('testInterceptor request');
+		    	var token = authService.getToken();
+		         if(config.url.indexOf(API) === 0 && token) {
+		        	 console.log('testInterceptor request --send token = ' + token);
+		        	 config.headers.Authorization = 'Bearer ' + token;
+		         }
+
+		      return config;
+		    },
+
+		    requestError: function(config) {
+		    	console.log('testInterceptor request error');
+		      return config;
+		    },
+
+		    response: function(res) {
+		    	console.log('testInterceptor response');
+		    	
+		    	if (res.status === 401) {
+		    		console.log('testInterceptor response 401');
+		    		//$state.go('login');
+		    	}
+		    	
+		    	if(res.config.url.indexOf(API) === 0 && res.data.token) {
+		    	      console.log('testInterceptor response - save token');
+		    	        //authService.saveToken(res.data.token);
+		    	}
+		    	
+		    	
+		      return res;
+		    },
+
+		    responseError: function(res) {
+		    	console.log('testInterceptor response error');
+		      return res;
+		    }
+		  }

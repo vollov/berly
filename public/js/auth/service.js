@@ -50,4 +50,29 @@ angular.module('auth.services', [])
 		$window.localStorage.removeItem('beryl-client-token');
 	};
 	return auth;
-} ]);
+} ])
+.factory('authInterceptor', ['authService', 'API', function authInterceptor(authService, API) {
+	var interceptor = {};
+	
+	interceptor.request = function(config) {
+		console.log('testInterceptor request');
+		var token = authService.getToken();
+//		if (config.url.indexOf(API) === 0 && token) {
+//			console.log('testInterceptor request --send token = ' + token);
+//			config.headers.Authorization = 'Bearer ' + token;
+//		}
+		return config;
+	};
+	
+	interceptor.response = function(res) {
+		console.log('testInterceptor response');
+		authService.saveToken('aabbcc');
+		return res;
+	};
+	
+	interceptor.responseError= function(res) {
+		console.log('testInterceptor responseError');
+		return res;
+	};
+	return interceptor;	
+}]);
