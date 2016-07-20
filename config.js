@@ -28,33 +28,27 @@ module.exports = {
 	test:{
 		url : 'http://localhost:8000'
 	},
+	
 	test_db:{
 		host: 'localhost',
 		name: 'beryl_test',
 		port: '27017',
 	},
-	port:8000,
-	token:{
-		secret: 'uwotm8xxc',
-		exp_in_days: 14, // token expire in 14 days
-		age: 20 *60 * 1000 // 20 minutes in ms
-	},
-	app:{
-		api_url:'/api/v1.0',
-		root:'.'
-	},
-	jwt:{
-		secret: 'myusername_hmacsha256',
-		algorithm: 'HS256',
-		expiresInSeconds: 1800
-	},
+	
 	db:{
 		host: 'localhost',
 		name: 'beryl',
 		port: '27017',
 	},
 	
-	'secret': 'ilovescotchyscotch',
-	'database': 'mongodb://localhost:27017/rest'
-
+	token:{
+		secret: 'uwotm8xxc',
+		user_property: 'payload', 
+		age: '30m'
+	},
+	
+	app:{
+		api_url:'/api/v1.0',
+		port:8000
+	}
 };

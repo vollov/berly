@@ -29,7 +29,7 @@ UserSchema.methods.generateJWT = function() {
 		_id : this._id,
 		username : this.username
 		//exp : parseInt(exp.getTime() / 1000),
-	}, cfg.token.secret, {expiresIn:'30m'});
+	}, cfg.token.secret, {expiresIn: cfg.token.age});
 };
 
 UserSchema.methods.setPassword = function(password) {

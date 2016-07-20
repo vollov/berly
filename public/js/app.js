@@ -1,8 +1,32 @@
 'use strict';
 
 
+
 angular.module('berylApp', ['ui.router', 'auth', 'message'])
-.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+.factory('testInterceptor', [function testInterceptor() {
+	  return {
+		    request: function(config) {
+		    	console.log('testInterceptor request');
+		      return config;
+		    },
+
+		    requestError: function(config) {
+		    	console.log('testInterceptor request error');
+		      return config;
+		    },
+
+		    response: function(res) {
+		    	console.log('testInterceptor response');
+		      return res;
+		    },
+
+		    responseError: function(res) {
+		    	console.log('testInterceptor response error');
+		      return res;
+		    }
+		  }
+		}])
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
 	$stateProvider.state('home', {
 		url : '/home',
 		templateUrl : '/views/home.html',
@@ -34,17 +58,19 @@ angular.module('berylApp', ['ui.router', 'auth', 'message'])
 				$state.go('home');
 			}
 		} ]
-	})
-	.state('register', {
-		url : '/register',
-		templateUrl : '/views/register.html',
-		controller : 'AuthCtrl',
-		onEnter : [ '$state', 'authService', function($state, authService) {
-			if (authService.isLoggedIn()) {
-				$state.go('home');
-			}
-		}]
 	});
+//	.state('register', {
+//		url : '/register',
+//		templateUrl : '/views/register.html',
+//		controller : 'AuthCtrl',
+//		onEnter : [ '$state', 'authService', function($state, authService) {
+//			if (authService.isLoggedIn()) {
+//				$state.go('home');
+//			}
+//		}]
+//	});
+	
+	$httpProvider.interceptors.push('testInterceptor');
 	
 	$urlRouterProvider.otherwise('home');
 }]);

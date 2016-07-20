@@ -10,13 +10,10 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var mongoose = require('mongoose');
-//var passport = require('passport');
-
 var cfg = require('./config');
 
 require('./models/Users');
 require('./models/Messages');
-//require('./lib/passport');
 
 //=======================
 //routes 
@@ -78,7 +75,7 @@ app.get('*', function(req,res){
 // start the server 
 // =======================
 
-app.listen(cfg.port, function(){
-  console.log('Express server listening on port ' + cfg.port);
-  console.log('Now serving the app at http://localhost:' + cfg.port);
+app.listen(cfg.app.port, function(){
+  console.log('Express server listening on port ' + cfg.app.port);
+  console.log('Now serving the app at http://localhost:' + cfg.app.port);
 });

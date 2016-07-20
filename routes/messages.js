@@ -10,7 +10,7 @@ var express = require('express');
 var router = express.Router();
 
 var expressJwt = require('express-jwt');
-var jwtauth = expressJwt({secret: cfg.token.secret, userProperty: 'payload'});
+var jwtauth = expressJwt({secret: cfg.token.secret, userProperty: cfg.token.user_property});
 
 router.get('/cat', function(req, res, next) {
 	log.debug('HTTP GET /cat -- all message');
