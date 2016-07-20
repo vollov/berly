@@ -35,6 +35,8 @@ https://material.google.com/style/icons.html#icons-product-icons
 
 https://scotch.io/tutorials/the-anatomy-of-a-json-web-token
 
+https://github.com/auth0-blog/angularjs-jwt-authentication-tutorial
+
 ##Debug server code
  set DEBUG=express:* & node index.js
 

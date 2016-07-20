@@ -10,8 +10,7 @@ angular.module('message.services', ['auth.services'])
 	};
 	//
 	service.getAll = function() {
-		return $http.get(url + 'messages', 
-				{headers: {Authorization: 'Bearer '+authService.getToken()}})
+		return $http.get(url + 'messages')
 		.success(function(data) {
 			angular.copy(data, service.messages);
 		});

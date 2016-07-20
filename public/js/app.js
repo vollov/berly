@@ -1,12 +1,18 @@
 'use strict';
 
-
+//{headers: {Authorization: 'Bearer '+authService.getToken()}}
 
 angular.module('berylApp', ['ui.router', 'auth', 'message'])
-.factory('testInterceptor', [function testInterceptor() {
+.constant('API', 'http://localhost:8000')
+.factory('testInterceptor', ['$state','authService', function testInterceptor($state, authService) {
 	  return {
 		    request: function(config) {
 		    	console.log('testInterceptor request');
+		    	 var token = authService.getToken();
+		         if(config.url.indexOf(API) === 0 && token) {
+		           config.headers.Authorization = 'Bearer ' + token;
+		         }
+
 		      return config;
 		    },
 
@@ -17,6 +23,18 @@ angular.module('berylApp', ['ui.router', 'auth', 'message'])
 
 		    response: function(res) {
 		    	console.log('testInterceptor response');
+		    	
+		    	if (res.status === 401) {
+		    		console.log('testInterceptor response 401');
+		    		//$state.go('login');
+		    	}
+		    	
+		    	if(res.config.url.indexOf(API) === 0 && res.data.token) {
+		    	      console.log('here');
+		    	        authService.saveToken(res.data.token);
+		    	}
+		    	
+		    	
 		      return res;
 		    },
 
