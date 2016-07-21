@@ -16,8 +16,8 @@ angular.module('auth.services', [])
 	
 	auth.isLoggedIn = function() {
 		var token = auth.getToken();
-
-		if (token) {
+		//console.log('in auth.isLoggedIn token=' + token);
+		if (token && token != 'undefined') {
 			var payload = JSON.parse($window.atob(token.split('.')[1]));
 
 			return payload.exp > Date.now() / 1000;
@@ -51,22 +51,33 @@ angular.module('auth.services', [])
 	};
 	return auth;
 } ])
-.factory('authInterceptor', ['authService', 'API', function authInterceptor(authService, API) {
+.factory('authInterceptor', ['$injector','API',function authInterceptor($injector,API) {
 	var interceptor = {};
 	
+	
 	interceptor.request = function(config) {
-		console.log('testInterceptor request');
+		console.log('testInterceptor request config.url=%s', config.url);
+		
+		var authService = $injector.get('authService');
 		var token = authService.getToken();
-//		if (config.url.indexOf(API) === 0 && token) {
-//			console.log('testInterceptor request --send token = ' + token);
-//			config.headers.Authorization = 'Bearer ' + token;
-//		}
+		
+		console.log('testInterceptor request config.url.indexOf(API)=%s, token=%s', config.url.indexOf(API), token);
+		if (config.url.indexOf(API) === 0 && token) {
+			console.log('testInterceptor request --send token = ' + token);
+			config.headers.Authorization = 'Bearer ' + token;
+		}
 		return config;
 	};
 	
 	interceptor.response = function(res) {
-		console.log('testInterceptor response');
-		authService.saveToken('aabbcc');
+		console.log('testInterceptor response res.config.url=%s', res.config.url);
+		console.log('testInterceptor response: res.config.url.indexOf(API)=%s, res.data.token=%s ',res.config.url.indexOf(API),res.data.token);
+		//authService.saveToken('aabbcc');
+		var authService = $injector.get('authService');
+		if(res.config.url.indexOf(API) === 0 && res.data.token) {
+		      console.log('here');
+		      authService.saveToken(res.data.token);
+		      }
 		return res;
 	};
 	

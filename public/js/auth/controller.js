@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('auth.controllers', [ 'auth.services', 'ui.router'])
-.controller('NavCtrl', ['$scope', 'authService',
-function($scope, authService) {
+.controller('NavCtrl', ['$scope', 'authService', '$state', 
+function($scope, authService, $state) {
 	$scope.isLoggedIn = authService.isLoggedIn;
 	$scope.currentUser = authService.currentUser;
-	$scope.logOut = authService.logOut;
+	$scope.logOut = function(){
+		authService.logOut();
+		$state.go('home');
+	};
 }]).controller('AuthCtrl', ['$scope', '$state', 'authService',
 function($scope, $state, authService) {
 	$scope.user = {};
