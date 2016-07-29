@@ -24,6 +24,19 @@ angular.module('berylApp', ['ui.router', 'auth', 'message'])
 		data:{
 			requireLogin: true
 		}
+	}).state('message', {
+		url : '/message/:id',
+		templateUrl : '/views/message.html',
+		data:{
+			requireLogin: true
+		},
+		controller : 'MessageDetailCtrl',
+		resolve : {
+			message : ['$stateParams', 'messageService',
+			function($stateParams, messageService) {
+				return messageService.get($stateParams.id);
+			}]
+		}
 	}).state('users', {
 		url : '/users',
 		templateUrl : '/views/users.html',
@@ -67,6 +80,11 @@ angular.module('berylApp', ['ui.router', 'auth', 'message'])
 	
 	$urlRouterProvider.otherwise('home');
 }])
+.filter('yesNo', function() {
+    return function(input) {
+        return input ? 'yes' : 'no';
+    }
+})
 .run(function ($rootScope,$state,authService) {
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
@@ -80,5 +98,4 @@ angular.module('berylApp', ['ui.router', 'auth', 'message'])
 			$state.go('login');
 		}
 	});
-
 });

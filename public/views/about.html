@@ -3,12 +3,38 @@
 </div>
 
 
-<form ng-submit="saveMessage()">
+<form name="messageForm" ng-submit="saveMessage()">
 	<h3>Leave us a message</h3>
 
 	<div class="form-group">
-		<input type="text" class="form-control" placeholder="Title"
-			ng-model="title"></input>
+		<input type="text" class="form-control" placeholder="Full Name"
+			ng-model="name" required></input>
+	</div>
+	<div class="form-group">
+		<input type="email" class="form-control" placeholder="Email Address"
+			ng-model="email" required></input>
+	</div>
+	<div role="alert">
+      <span class="error" ng-show="messageForm.input.$error.required">
+        Required!</span>
+      <span class="error" ng-show="messageForm.input.$error.email">
+        Not valid email!</span>
+    </div>
+    <div class="form-group">
+    	<label>AC:
+			<input type="checkbox"  ng-model="ac"></input>
+		</label>
+		<label>Furnance:
+		<input type="checkbox" ng-model="furnance"></input>
+		</label>
+		<label>Other:
+		<input type="checkbox" ng-model="other"></input>
+		</label>
+	</div>
+    
+	<div class="form-group">
+		<input type="text" class="form-control" placeholder="Phone: xxx-xxx-xxxx"
+			ng-model="phone" required></input>
 	</div>
 	<div class="form-group">
 		<input type="text" class="form-control" placeholder="Leave us a message"

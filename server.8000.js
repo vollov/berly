@@ -32,6 +32,7 @@ mongoose.connect('mongodb://localhost/'+ cfg.db.name, function(err,db){
     }
 });
 
+
 // =======================
 // configuration
 // =======================
@@ -47,13 +48,18 @@ app.use(cfg.app.api_url, auth);
 app.use(cfg.app.api_url + '/messages', messages);
 app.use(cfg.app.api_url + '/users', users);
 
+app.get('*', function(req,res){
+	res.sendfile('index.html', { root: path.resolve(__dirname + '/public') });
+});
 
 //catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+app.use(function(req, res) {
+	res.status(404).send('404: Page not Found');
 });
+
+app.use(function(error, req, res, next) {
+    res.status(500).send('500: Internal Server Error');
+ });
 
 //development error handler
 //will print stacktrace
@@ -67,9 +73,7 @@ if (app.get('env') === 'development') {
 	});
 }
 
-app.get('*', function(req,res){
-	res.sendfile('index.html', { root: path.resolve(__dirname + '/public') });
-})
+
 
 // =======================
 // start the server 

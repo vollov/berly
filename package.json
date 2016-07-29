@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vollov/beryl"
+    "url": "https://github.com/vollov/nthomeservice"
   },
   "license": "MIT",
   "main": "server.8000.js",

@@ -11,3 +11,5 @@
 				</nav>
 			</div>
 		</div>
+		
+				<td>{{m.create_date | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>

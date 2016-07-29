@@ -28,5 +28,17 @@ angular.module('message.services', ['auth.services'])
 		});
 	};
 	
+	service.deleteById = function(id) {
+		return $http.delete(url + 'messages/' + id).then(function(res) {
+			return res.data;
+		});
+	};
+	
+	service.markProcessed = function(message) {
+		return $http.put(url + 'messages/' + message._id, message).then(function(res) {
+			return res.data;
+		});
+	};
+	
 	return service;
 } ]);
