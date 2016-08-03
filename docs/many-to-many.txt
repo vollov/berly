@@ -1,0 +1,20 @@
+http://stackoverflow.com/questions/25101386/many-to-many-relationship-with-nosql-mongodb-and-mongoose
+
+Indexing
+
+For ex.
+
+userSchema = new Schema(
+            {//otherstuff
+               project_ids: [{type: Schema.Types.ObjectId, ref: 'Project'}})
+              ...
+            }) 
+userSchema.index({'project_ids':1})
+or
+
+projectSchema = new Schema(
+            {//otherstuff
+               user_ids: [{type: Schema.Types.ObjectId, ref: 'User'}})
+              ...
+            }) 
+projectSchema.index({'user_ids':1})

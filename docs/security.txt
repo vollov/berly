@@ -1,0 +1,16 @@
+https://blog.nodeswat.com/implement-access-control-in-node-js-8567e7b484d1#.7y1xj66tg
+https://github.com/seeden/rbac
+
+https://github.com/brwr/thinkster-django-angular
+https://github.com/zlkca/angular-express-login.git
+
+## ACL concepts
+ACL - access control list
+object  - resource to be controlled, e.g. an Url
+subject - each entry of acl = subject(user) + operations
+
+
+https://github.com/LucianoGanga/simple-rbac
+
+https://promise-nuggets.github.io/
+http://bluebirdjs.com/docs/api/promisification.html

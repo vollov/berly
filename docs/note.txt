@@ -13,3 +13,5 @@
 		</div>
 		
 				<td>{{m.create_date | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+				
+				http://nodeschool.io/#workshopper-list
