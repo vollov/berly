@@ -16,10 +16,10 @@ angular.module('auth.services', [])
 	
 	auth.isLoggedIn = function() {
 		var token = auth.getToken();
-		//console.log('in auth.isLoggedIn token=' + token);
+		console.log('in auth.isLoggedIn token=' + token);
 		if (token && token != 'undefined') {
 			var payload = JSON.parse($window.atob(token.split('.')[1]));
-
+			console.log('in auth.isLoggedIn payload={0}', payload);
 			return payload.exp > Date.now() / 1000;
 		} else {
 			return false;
